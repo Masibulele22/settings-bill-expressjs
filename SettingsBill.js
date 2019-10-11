@@ -34,19 +34,19 @@ module.exports = function SettingsBill() {
                     type: action,
                     cost,
                     timestamp: new Date(),
-
                 });
-
             }
-            else if (action === 'call') {
+            
+            if (action === 'call') {
                 cost = callCost;
                 actionList.push({
                     type: action,
                     cost,
                     timestamp: new Date(),
-                    
+
                 });
             }
+            
         }
     }
 
@@ -56,7 +56,6 @@ module.exports = function SettingsBill() {
 
     function actionsFor(type) {
         const filteredActions = [];
-        console.log(filteredActions);
         // loop through all the entries in the action list 
         for (let index = 0; index < actionList.length; index++) {
             const action = actionList[index];
@@ -68,13 +67,10 @@ module.exports = function SettingsBill() {
         }
 
         return filteredActions;
-
-        // return actionList.filter((action) => action.type === type);
     }
 
     function getTotal(type) {
         let total = 0;
-        console.log(total);
         // loop through all the entries in the action list 
         for (let index = 0; index < actionList.length; index++) {
             const action = actionList[index];
@@ -85,13 +81,6 @@ module.exports = function SettingsBill() {
             }
         }
         return total;
-
-        // the short way using reduce and arrow functions
-
-        // return actionList.reduce((total, action) => { 
-        //     let val = action.type === type ? action.cost : 0;
-        //     return total + val;
-        // }, 0);
     }
 
     function grandTotal() {

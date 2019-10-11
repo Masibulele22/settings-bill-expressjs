@@ -37,47 +37,14 @@ app.get('/', function(req, res){
 });
 
 app.post('/settings', function(req, res){
-    //  console.log(settingsBill)
+
     settingsBillz.setSettings(req.body);
-    // console.log(settingsBillz.getSettings());
 
     res.redirect('/');
 });
 
-// app.post('/settings', function(req, res){
-//     //  console.log(settingsBill)
-//     settingsBillz.setSettings(req.body.smsCost);
-//     settingsBillz.setSettings(req.body.callCost);
-//     settingsBillz.setSettings(req.body.warningLevel);
-//     settingsBillz.setSettings(req.body.criticalLevel);    
-//    // console.log(settingsBillz.getSettings());
-
-//     res.redirect('/');
-// });
-
-// app.post('/settings', function(req, res){
-//     let smsCost = req.body.smsCost;
-//     let callCost = req.body.callCost;
-//     let warningLevel = req.body.warningLevel;
-//     let criticalLevel = req.body.criticalLevel;
-
-//     var settings = {
-//       smsCost,
-//       callCost,
-//       warningLevel,
-//       criticalLevel
-//     };
-
-//     // process data
-//     globalSetings = settings;
-
-//     // note that data can be sent to the template
-//     res.render('home', {settings})
-// });
-
 app.post('/action', function(req, res){
     
-    //console.log(req.body.actionType);
     settingsBillz.recordAction(req.body.actionType);
 
     res.redirect('/');
@@ -86,23 +53,25 @@ app.post('/action', function(req, res){
 app.get('/actions', function(req, res) {
     
     const recordedAction =  settingsBillz.actions();
-    // console.log(recordedAction);
     for(i = 0; i < recordedAction.length; i++) {
         var newRecordedAction = recordedAction[i];
         recordedAction[i].timeAgo = moment(newRecordedAction.timestamp).fromNow();
     };
-    
-        console.log({recordedAction});
-
-    // var Action = moment().fromNow();
 
     res.render('actions', {actions: recordedAction});
     
 });
 
 app.get('/actions/:type', function(req, res){
+
+    const recordedAction =  settingsBillz.actions();
+    for(i = 0; i < recordedAction.length; i++) {
+        var newRecordedAction = recordedAction[i];
+        recordedAction[i].timeAgo = moment(newRecordedAction.timestamp).fromNow();
+    };
+    
     const actionType = req.params.type;
-    res.render('actions', {totals: settingsBillz.actions(actionType)});
+    res.render('actions', {actions: settingsBillz.actionsFor(actionType)});
 });
 
 let PORT = process.env.PORT || 4004;
